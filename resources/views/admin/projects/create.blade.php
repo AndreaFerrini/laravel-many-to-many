@@ -50,6 +50,17 @@
           </div>
         </div>
 
+        <div class="form-group mt-4 mb-3 d-flex justify-content-start">
+          @foreach ($technologies as $elem)
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="technologies[]" value="{{ $elem->id }}" id="project-checkbox-{{$elem->id}}">
+              <label class="form-check-label pe-5" for="project-checkbox-{{$elem->id}}">
+                {{$elem->name}}
+              </label>
+            </div>
+          @endforeach
+        </div>
+
 
         <button class="btn btn-success">Create project</button>
 

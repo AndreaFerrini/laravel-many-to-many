@@ -14,9 +14,19 @@
         {{ $project->content}}
     </p>
 
+    <h2 class="mt-3">Types</h2>
+    @if( $project->types )
+        <div>Name: {{ $project->type->name }}</div>
+        <div>Slug: {{ $project->type->slug }}</div>
+    @endif
 
-    <div> Name: {{ $project->type->name }}</div>
-    <div> Slug: {{ $project->type->slug }}</div>
+
+    <h2 class="mt-3">Technologies</h2>
+    @if( $project->technologies )
+    	@foreach ( $project->technologies as $elem )
+    		<div>Technology Name: {{ $elem->name }} </div>
+    	@endforeach
+    @endif
 
 
 

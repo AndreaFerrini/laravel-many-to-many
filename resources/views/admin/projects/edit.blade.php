@@ -38,6 +38,7 @@
           <input type="file" class="form-control" name="cover_image" id="project_cover_image" placeholder="" aria-describedby="fileHelpId">
         </div>
 
+        {{-- Types --}}
         <div class="mb-3">
           <label for="project-types" class="form-label">Types</label>
           <select class="form-select form-select-lg" name="type_id" id="project-types">
@@ -53,6 +54,24 @@
               </div>
             @enderror
           </div>
+        </div>
+
+        {{-- Technologies --}}
+        <div class="form-group mb-3 mt-4 d-flex justify-content-start">
+          @foreach ($technologies as $elem)
+            <div class="form-check @error('technologies') is-invalid @enderror">
+              @if ( $errors->any()  )
+                <input class="form-check-input" type="checkbox" name="technologies[]" value="{{ $elem->id }}" id="post-checkbox-{{$elem->id}}"
+                {{ in_array( $elem->id, old( "technologies", [] )) ? "checked" : "" }}>
+              @else
+                <input class="form-check-input" type="checkbox" name="technologies[]" value="{{ $elem->id }}" id="post-checkbox-{{$elem->id}}"
+                {{ ($project->technologies->contains($elem) ) ? "checked" : "" }}>
+              @endif
+              <label class="form-check-label pe-5" for="post-checkbox-{{$elem->id}}">
+                {{$elem->name}}
+              </label>
+            </div>
+          @endforeach
         </div>
 
         <button class="btn btn-success">Create project</button>

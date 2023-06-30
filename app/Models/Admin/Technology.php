@@ -9,7 +9,7 @@ class Technology extends Model
 {
     use HasFactory;
 
-    protected $table = "technology";
+    protected $table = "technologies";
 
     protected $fillable = ["name", "slug"];
 

@@ -9,6 +9,7 @@ use App\Models\Admin\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Admin\Type;
+use App\Models\Admin\Technology;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -35,9 +36,10 @@ class ProjectController extends Controller
     {
 
         $types = Type::all();
+        $technologies = Technology::all();
 
 
-        return view( "admin.projects.create", compact("types") );
+        return view( "admin.projects.create", compact("types", "technologies") );
     }
 
     /**
@@ -67,6 +69,7 @@ class ProjectController extends Controller
 
         $form_data["slug"] = $slug;
 
+
         if( $request->hasFile("cover_image") ){
 
             $path = Storage::disk("public")->put( "project_image", $request->cover_image );
@@ -74,6 +77,10 @@ class ProjectController extends Controller
         }
 
         $new_project = Project::create($form_data);
+
+        if( $request->has("technologies") ){
+            $new_project->technologies()->attach($request->technologies);
+        }
 
         return redirect()->route("admin.projects.index");
 
@@ -88,7 +95,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view ( "admin.projects.show", compact("project") );
+
+        return view ( "admin.projects.show", compact("project", "type") );
     }
 
     /**
@@ -101,8 +109,9 @@ class ProjectController extends Controller
     {
 
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view( "admin.projects.edit", compact("project", "types") );
+        return view( "admin.projects.edit", compact("project", "types", "technologies") );
     }
 
     /**
@@ -146,6 +155,12 @@ class ProjectController extends Controller
         }
 
         $project->update( $form_data );
+
+
+        if( $request->has("technologies") ) {
+            $project->technologies()->sync($request->technologies);
+        }
+
 
         return redirect()->route("admin.projects.index")->with("success", "Il project è stato modificato: $project->title");
     }
